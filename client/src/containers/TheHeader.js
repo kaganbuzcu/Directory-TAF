@@ -4,11 +4,8 @@ import {
   CHeader,
   CToggler,
   CHeaderBrand,
-  CSubheader,
-  CHeaderNav,
+  CSubheader
 } from "@coreui/react";
-
-import { TheHeaderDropdown, TheHeaderDropdownNotes } from "./index";
 
 const TheHeader = () => {
   const dispatch = useDispatch();
@@ -44,14 +41,6 @@ const TheHeader = () => {
         <CHeaderBrand className="mx-auto d-lg-none" to="/">
           <h2>Santral</h2>
         </CHeaderBrand>
-
-        <div className="d-md-down-none mfe-2 c-subheader-nav">
-          <CHeaderNav className="px-3">
-            <TheHeaderDropdownNotes />
-          </CHeaderNav>
-          <TheHeaderDropdown />
-          <span style={{ color: "#000" }}>Kağan Buzcu</span>
-        </div>
       </CSubheader>
     </CHeader>
   );

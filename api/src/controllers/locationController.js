@@ -4,7 +4,97 @@ import db from "../db/dbQuery";
  * Get locations
  */
 const getLocations = (req, res) => {
-  db.query(`SELECT * FROM locations`, [])
+  db.query(`SELECT * FROM locations ORDER BY "isGeneral" DESC`, [])
+    .then((result) => {
+      res.status(200).send({ status: "success", data: result.rows });
+    })
+    .catch(({ message }) => {
+      res.send({ status: "error", message: message });
+    });
+};
+
+/**
+ * Create a location.
+ */
+const createLocation = (req, res) => {
+  const { name, externalNumber, tafics, isGeneral, operatorAccessNumber } = req.body || {};
+
+  if (name === '' || externalNumber === '' || tafics === '' || isGeneral === undefined || operatorAccessNumber === '') {
+    res.status(400).send({ status: "error", message: "Tüm alanlar gereklidir." });
+    return;
+  }
+
+  db.query(`SELECT * FROM locations WHERE "name" = $1`, [name])
+    .then((result) => {
+      if (result.rows.length != 0) {
+        res.send({ status: "error", message: "Aynı isme sahip bir birlik var." });
+      } else {
+        db.query(`INSERT INTO locations VALUES ($1, $2, $3, $4, $5) RETURNING *`, [
+          name,
+          externalNumber,
+          tafics,
+          isGeneral,
+          operatorAccessNumber
+        ])
+          .then((result) => res.status(200)
+            .send({
+              status: "success",
+              message: "Birlik başarıyla eklendi.",
+              lastID: result.rows[0].ID
+            }))
+          .catch(message => res.status(500).send({ status: "error", message: message }));
+      }
+    })
+    .catch(({ message }) => {
+      res.status(500).send({ status: "error", message: message });
+      return;
+    });
+
+};
+
+/**
+ * Remove a location.
+ */
+const removeLocation = (req, res) => {
+  if (req.params.id === undefined || req.params.id === "") {
+    res.status(400).send({ status: "error", message: 'Eksik parametre!' });
+    return;
+  }
+
+  db.query(`DELETE FROM locations WHERE "ID" = $1`, [req.params.id])
+    .then(() => res.status(200)
+    .send({
+      status: "success",
+      message: "Birlik başarıyla silindi.",
+      lastID: req.params.id
+    }))
+    .catch(({ error }) => res.status(500).send({ status: "error", message: error }));
+};
+
+/**
+ * Update a location.
+ */
+const updateLocation = (req, res) => {
+  const { column, data } = req.body || {};
+
+  if (column === undefined || data === undefined || req.params.id === undefined) {
+    res.status(400).send({ status: "error", message: 'Eksik parametre!' });
+    return;
+  }
+
+  db.query(`UPDATE locations SET "${column}" = $1 WHERE "ID" = $2`, [
+    data,
+    req.params.id,
+  ])
+    .then(() => res.status(200).send({ status: "success", message: "Güncelleme başarılı." }))
+    .catch(({ message }) => res.status(500).send({ status: "error", message: message }));
+};
+
+/**
+ * Get a post.
+ */
+const getLocationByID = (req, res) => {
+  db.query(`SELECT * FROM locations WHERE "ID" = $1`, [req.params.id])
     .then((result) => {
       res.status(200).send(result.rows);
     })
@@ -13,45 +103,10 @@ const getLocations = (req, res) => {
     });
 };
 
-/**
- * Create a location.
- */
-const createLocation = (req, res) => {
-  const { author_id: authorId, title, content } = req.body || {};
-
-  res.status(200).send({ hede: "ok" });
-};
-
-/**
- * Remove a location.
- */
-const removeLocation = (req, res) => {
-  res.status(203).send({ hede: "ok" });
-};
-
-/**
- * Update a location.
- */
-const updateLocation = (req, res) => {
-  const { title, content } = req.body || {};
-
-  if (!title || !content) {
-    res.status(400).send({ message: "Post title and content are required." });
-    return;
-  }
-};
-
-/**
- * Get a post.
- */
-const getLocation = (req, res) => {
-  res.status(200).send({ hede: "ok" });
-};
-
 export {
   getLocations,
   createLocation,
   removeLocation,
   updateLocation,
-  getLocation,
+  getLocationByID,
 };

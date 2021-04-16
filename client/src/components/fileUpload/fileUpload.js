@@ -12,10 +12,6 @@ const FileUpload = (props) => {
       prop: "name",
       required: true,
     },
-    "SANTRAL ÇAĞRI ADI": {
-      prop: "centralCallName",
-      required: true,
-    },
     "ERİŞİM NO": {
       prop: "tafics",
       required: true,

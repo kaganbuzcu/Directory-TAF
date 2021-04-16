@@ -1,10 +1,16 @@
+import axios from 'axios';
+
 export default function apiCaller(method, route, data = null) {
-  return fetch(process.env.REACT_APP_API_URL + route, {
+  const config = {
     method,
+    url: process.env.REACT_APP_API_URL + route,
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     },
-    body: data ? JSON.stringify(data) : null,
-  }).then((res) => res.json());
+    data: data !== null ? JSON.stringify(data) : null,
+  };
+  return axios(config)
+    .then(response => response.data)
+    .catch(error => error);
 }

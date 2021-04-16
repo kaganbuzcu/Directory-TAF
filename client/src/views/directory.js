@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import {
+  fetchLocationsAction,
+} from "../store/ducks/locations/actions";
 import {
   CCard,
   CCardBody,
@@ -16,7 +20,7 @@ import {
 import Select from "react-select";
 import { DataTable } from "../components/dataTable";
 
-const Directory = () => {
+const Directory = (props) => {
   const [collapse, setCollapse] = useState(false);
 
   const directoryData = [
@@ -130,30 +134,6 @@ const Directory = () => {
     },
   ];
 
-  const generalTaficsData = [
-    {
-      name: "GENELKURMAY BAŞKANLIĞI KARARGAHI / ANKARA",
-      centralCallName: "KILIÇ",
-      tafics: 537,
-      operatorAccessNumber: "2222/5118",
-      gsm: "0312 402 61 00",
-    },
-    {
-      name: "KARA KUVVETLERİ PTT SANTRALİ / ANKARA",
-      centralCallName: "ÇAKMAK",
-      tafics: 531,
-      operatorAccessNumber: "5555",
-      gsm: "0312 402 55 55",
-    },
-    {
-      name: "CUMHURBAŞKANLIĞI MUHAFIZ ALAY K.LIĞI / ANKARA",
-      centralCallName: "BULUT",
-      tafics: 527,
-      operatorAccessNumber: "89",
-      gsm: "0312 442 89 03 - 05",
-    },
-  ];
-
   const directoryColumns = [
     {
       dataField: "ID",
@@ -186,7 +166,21 @@ const Directory = () => {
     },
   ];
 
-  const generalTaficsColumns = [
+  const options = [
+    { value: "0", label: "6'NCI MKNZ.P.TÜM.K.LIĞI EKY/ÇILDIROBA" },
+    { value: "1", label: "KOMUTAN YARDIMCILIĞI" },
+    { value: "2", label: "PERSONEL ŞUBE MÜDÜRLÜĞÜ" },
+  ];
+
+  const {
+    onPageLoad,
+  } = props.methods;
+
+  const {
+    locations,
+  } = props.states;
+
+  const locationsColumns = [
     {
       dataField: "ID",
       text: "ID",
@@ -195,10 +189,7 @@ const Directory = () => {
     {
       dataField: "name",
       text: "BİRLİK/KURUM ADI",
-    },
-    {
-      dataField: "centralCallName",
-      text: "SANTRAL ÇAĞRI ADI",
+      headerAttrs: { width: "40%" },
     },
     {
       dataField: "tafics",
@@ -209,16 +200,15 @@ const Directory = () => {
       text: "OPERATÖR ERİŞİM NO",
     },
     {
-      dataField: "gsm",
-      text: "HARİCİ TEL.",
+      dataField: "externalNumber",
+      text: "HARİCİ NO",
     },
   ];
 
-  const options = [
-    { value: "0", label: "6'NCI MKNZ.P.TÜM.K.LIĞI EKY/ÇILDIROBA" },
-    { value: "1", label: "KOMUTAN YARDIMCILIĞI" },
-    { value: "2", label: "PERSONEL ŞUBE MÜDÜRLÜĞÜ" },
-  ];
+  /**Get */
+  useEffect(() => {
+    onPageLoad();
+  }, []);
 
   return (
     <>
@@ -279,8 +269,8 @@ const Directory = () => {
                     <CCard>
                       <CCardBody>
                         <DataTable
-                          rows={generalTaficsData}
-                          columns={generalTaficsColumns}
+                          rows={locations}
+                          columns={locationsColumns}
                         />
                       </CCardBody>
                     </CCard>
@@ -295,4 +285,20 @@ const Directory = () => {
   );
 };
 
-export default Directory;
+const mapStateToProps = (state) => {
+  return {
+    states: { ...state.locations }
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    methods: {
+      onPageLoad: () => {
+        dispatch(fetchLocationsAction());
+      },
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Directory);

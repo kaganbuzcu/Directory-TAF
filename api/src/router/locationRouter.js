@@ -4,7 +4,7 @@ const {
   createLocation,
   removeLocation,
   updateLocation,
-  getLocation,
+  getLocationByID,
 } = require('../controllers/locationController');
 
 const router = express.Router();
@@ -16,11 +16,11 @@ router.get('/locations', getLocations);
 /*create a location*/
 router.post('/locations', createLocation);
 /*update a location*/
-router.put('/locations', updateLocation);
+router.put('/locations/:id', updateLocation);
 /*remove a location*/
 router.delete('/locations/:id', removeLocation);
 /*get a location*/
-router.get('/locations/:id', getLocation);
+router.get('/locations/:id', getLocationByID);
 
 
 

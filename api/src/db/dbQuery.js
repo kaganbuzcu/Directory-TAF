@@ -15,7 +15,6 @@ export default {
           resolve(res);
         })
         .catch((err) => {
-          console.log(err);
           reject(err);
         });
     });

@@ -4,7 +4,6 @@ const Directory = React.lazy(() => import('./views/directory'));
 const LocationSettings = React.lazy(() => import('./views/locationSettings'));
 const SubLocationSettings = React.lazy(() => import('./views/subLocationSettings'));
 const NumberSettings = React.lazy(() => import('./views/numberSettings'));
-const UserSettings = React.lazy(() => import('./views/userSettings'));
 const HeaderSettings = React.lazy(() => import('./views/headerSettings'));
 
 const routes = [
@@ -14,7 +13,6 @@ const routes = [
   { path: '/ayarlar/alt-birim', name: 'Alt Birim Ayarları', component: SubLocationSettings },
   { path: '/ayarlar/numara', name: 'Numara Ayarları', component: NumberSettings },
   { path: '/ayarlar/baslik', name: 'Başlık ve Açıklama Ayarları', component: HeaderSettings },
-  { path: '/ayarlar/kullanici', name: 'Kullanıcı Ayarları', component: UserSettings }
 ];
 
 export default routes;

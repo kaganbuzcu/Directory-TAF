@@ -9,6 +9,11 @@ import paginationFactory, {
   PaginationProvider,
   PaginationListStandalone,
 } from "react-bootstrap-table2-paginator";
+import {
+  CButton
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { freeSet } from "@coreui/icons";
 
 const dotDefinitions = {
   1: "inci",
@@ -71,7 +76,18 @@ const SearchBar = (props) => {
 };
 
 const DataTable = (props) => {
-  const { columns, rows, isCellEditActive } = props;
+  const {
+    columns,
+    rows,
+    isCellEditActive,
+    asyncUpdateMethod,
+    isAddButtonActive,
+    onAddButtonClick
+  } = props;
+  
+  const beforeSaveCell = (oldValue, newValue, row, column) => {
+    asyncUpdateMethod(oldValue, newValue, row, column);
+  }
 
   const options = {
     custom: true,
@@ -103,6 +119,25 @@ const DataTable = (props) => {
         {(toolkitprops) => (
           <div>
             <SearchBar {...toolkitprops.searchProps} />
+            {isAddButtonActive !== undefined && isAddButtonActive === true
+              ? (
+                <div className="float-right">
+                  <CButton
+                    key="addLocationButton"
+                    color="success"
+                    className="m-2"
+                    style={{
+                      alignItems: "center",
+                      display: "flex"
+                    }}
+                    onClick={onAddButtonClick}
+                  >
+                    <CIcon content={freeSet.cilPlus} style={{ width: 20, height: 20 }} />
+                    <span>Birlik Ekle</span>
+                  </CButton>
+                </div>
+              )
+              : undefined}
             <BootstrapTable
               striped
               hover
@@ -111,8 +146,9 @@ const DataTable = (props) => {
               cellEdit={
                 isCellEditActive !== undefined && isCellEditActive === true
                   ? cellEditFactory({
-                      mode: "dbclick",
-                    })
+                    mode: "dbclick",
+                    beforeSaveCell
+                  })
                   : undefined
               }
             />

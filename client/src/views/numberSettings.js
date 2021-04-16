@@ -23,10 +23,6 @@ const NumberSettings = () => {
       text: "BİRLİK/KURUM ADI",
     },
     {
-      dataField: "centralCallName",
-      text: "SANTRAL ÇAĞRI ADI",
-    },
-    {
       dataField: "tafics",
       text: "ERİŞİM NO",
     },
