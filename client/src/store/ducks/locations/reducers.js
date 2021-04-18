@@ -5,7 +5,7 @@ import {
 export const initialState = {
   locations: [],
   loading: false,
-  locationInsertInputValues: {
+  insertInputValues: {
     name: '',
     tafics: '',
     isGeneral: false,

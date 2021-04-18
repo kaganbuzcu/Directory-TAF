@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
-  fetchLocationsAction,
-  onChangeLocationInsertInput,
-  locationInsertAction,
-  locationUpdateAction,
-  locationDeleteAction,
+  fetchAction,
+  onChangeInsertInput,
+  insertAction,
+  updateAction,
+  deleteAction,
   clearApiCallStatus
 } from "../store/ducks/locations/actions";
 import { DataTable } from "../components/dataTable";
@@ -264,19 +264,19 @@ const mapDispatchToProps = (dispatch) => {
   return {
     methods: {
       onPageLoad: () => {
-        dispatch(fetchLocationsAction());
+        dispatch(fetchAction());
       },
       onChangeLocationInsertInput: (values) => {
-        dispatch(onChangeLocationInsertInput(values));
+        dispatch(onChangeInsertInput(values));
       },
       onLocationInsertFormSubmit: (params) => {
-        dispatch(locationInsertAction(params));
+        dispatch(insertAction(params));
       },
       onLocationUpdateSubmit: (params) => {
-        dispatch(locationUpdateAction(params));
+        dispatch(updateAction(params));
       },
       onLocationDeleteSubmit: (params) => {
-        dispatch(locationDeleteAction(params));
+        dispatch(deleteAction(params));
       },
       onChangeAlertShow: (alertTimeout) => {
         if (alertTimeout === 0) {

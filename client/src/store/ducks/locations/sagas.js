@@ -1,14 +1,14 @@
 import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import apiCaller from '../../utils/apiCaller';
 import {
-  fetchLocationsSuccess,
-  fetchLocationsError,
-  locationInsertSuccess,
-  locationInsertError,
-  locationUpdateSuccess,
-  locationUpdateError,
-  locationDeleteSuccess,
-  locationDeleteError
+  fetchSuccess,
+  fetchError,
+  insertSuccess,
+  insertError,
+  updateSuccess,
+  updateError,
+  deleteSuccess,
+  deleteError
 } from './actions';
 import { LocationsActionTypes } from './types';
 
@@ -23,12 +23,12 @@ function* handleFetch(action) {
       action.meta.route,
     );
 
-    yield put(fetchLocationsSuccess(res.data));
+    yield put(fetchSuccess(res.data));
   } catch (err) {
     if (err instanceof Error) {
-      yield put(fetchLocationsError(err));
+      yield put(fetchError(err));
     } else {
-      yield put(fetchLocationsError('An unknown error occured.'));
+      yield put(fetchError('An unknown error occured.'));
     }
   }
 }
@@ -36,7 +36,7 @@ function* handleFetch(action) {
 /**
  * @desc Business location insert of effect.
  */
-function* handleLocationInsert(action) {
+function* handleInsert(action) {
   try {
     const res = yield call(
       apiCaller,
@@ -46,15 +46,15 @@ function* handleLocationInsert(action) {
     );
 
     if (res.status === "error") {
-      yield put(locationInsertError(res));
+      yield put(insertError(res));
     } else {
-      yield put(locationInsertSuccess(res));
+      yield put(insertSuccess(res));
     }
   } catch (err) {
     if (err instanceof Error) {
-      yield put(locationInsertError(err));
+      yield put(insertError(err));
     } else {
-      yield put(locationInsertError('An unknown error occured.'));
+      yield put(insertError('An unknown error occured.'));
     }
   }
 }
@@ -62,7 +62,7 @@ function* handleLocationInsert(action) {
 /**
  * @desc Business location update of effect.
  */
-function* handleLocationUpdate(action) {
+function* handleUpdate(action) {
   try {
     const res = yield call(
       apiCaller,
@@ -72,15 +72,15 @@ function* handleLocationUpdate(action) {
     );
 
     if (res.status === "error") {
-      yield put(locationUpdateError(res));
+      yield put(updateError(res));
     } else {
-      yield put(locationUpdateSuccess(res));
+      yield put(updateSuccess(res));
     }
   } catch (err) {
     if (err instanceof Error) {
-      yield put(locationUpdateError(err));
+      yield put(updateError(err));
     } else {
-      yield put(locationUpdateError('An unknown error occured.'));
+      yield put(updateError('An unknown error occured.'));
     }
   }
 }
@@ -88,7 +88,7 @@ function* handleLocationUpdate(action) {
 /**
  * @desc Business location delete of effect.
  */
-function* handleLocationDelete(action) {
+function* handleDelete(action) {
   try {
     const res = yield call(
       apiCaller,
@@ -97,15 +97,15 @@ function* handleLocationDelete(action) {
     );
 
     if (res.status === "error") {
-      yield put(locationDeleteError(res));
+      yield put(deleteError(res));
     } else {
-      yield put(locationDeleteSuccess(res));
+      yield put(deleteSuccess(res));
     }
   } catch (err) {
     if (err instanceof Error) {
-      yield put(locationDeleteError(err));
+      yield put(deleteError(err));
     } else {
-      yield put(locationDeleteError('An unknown error occured.'));
+      yield put(deleteError('An unknown error occured.'));
     }
   }
 }
@@ -115,9 +115,9 @@ function* handleLocationDelete(action) {
  */
 function* watchFetchRequest() {
   yield takeEvery(LocationsActionTypes.FETCH, handleFetch);
-  yield takeLatest(LocationsActionTypes.INSERT, handleLocationInsert);
-  yield takeLatest(LocationsActionTypes.UPDATE, handleLocationUpdate);
-  yield takeLatest(LocationsActionTypes.DELETE, handleLocationDelete);
+  yield takeLatest(LocationsActionTypes.INSERT, handleInsert);
+  yield takeLatest(LocationsActionTypes.UPDATE, handleUpdate);
+  yield takeLatest(LocationsActionTypes.DELETE, handleDelete);
 }
 
 /**

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
-  fetchLocationsAction
+  fetchAction as fetchLocationsAction
 } from "../store/ducks/locations/actions";
 import {
   fetchAction,
