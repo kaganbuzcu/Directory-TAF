@@ -1,5 +1,5 @@
 import locationRouter from './locationRouter';
-import userRouter from './userRouter';
+import subLocationRouter from './subLocationRouter';
 
 export default (app) => {
   app.get('/api/v1/', (req, res) => {
@@ -7,5 +7,5 @@ export default (app) => {
   });
 
   app.use('/api/v1/', locationRouter);
-  app.use('/api/v1/', userRouter);
+  app.use('/api/v1/', subLocationRouter);
 };

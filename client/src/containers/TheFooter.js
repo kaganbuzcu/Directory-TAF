@@ -10,7 +10,7 @@ const TheFooter = () => {
       </div>
       <div className="mfs-auto">
         <span className="mr-1">Powered by</span>
-        <a href="https://www.linkedin.com/in/kağan-buzcu/" target="_blank" rel="noopener noreferrer">6'INCI MKNZ.P.TÜM.K.LIĞI (EKY) ÇILDIROBA ÜS BÖLGE KOMUTANLIĞI - Mu.Er. Kağan BUZCU</a>
+        <a href="https://www.linkedin.com/in/kağan-buzcu/" target="_blank" rel="noopener noreferrer">6'INCI MKNZ.P.TÜM.K.LIĞI (EKY) ÇILDIROBA MEBS KISIM KOMUTANLIĞI - Mu.Er. Kağan BUZCU</a>
       </div>
     </CFooter>
   )

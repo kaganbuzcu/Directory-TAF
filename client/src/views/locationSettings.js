@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { freeSet } from "@coreui/icons";
 import {
   fetchLocationsAction,
   onChangeLocationInsertInput,
@@ -15,6 +14,7 @@ import { InsertFormModal } from "../components/insertFormModal";
 import { LocationInsertForm } from "../components/locationInsertForm";
 import { Alert } from "../components/alert";
 import { IconButton } from "../components/iconButton";
+import { freeSet } from "@coreui/icons";
 
 import {
   CCard,
@@ -37,8 +37,7 @@ const LocationSettings = (props) => {
     loading,
     locationInsertInputValues,
     apiCallStatus,
-    apiCallStatusMessage,
-    updateStatus
+    apiCallStatusMessage
   } = props.states;
   const {
     onPageLoad,
@@ -84,7 +83,6 @@ const LocationSettings = (props) => {
 
   /**Update */
   const locationUpdateCell = (oldValue, newValue, row, column) => {
-    //console.log(newValue, row.ID, column.dataField);
     let params = {
       column: column.dataField,
       data: newValue,
@@ -101,7 +99,7 @@ const LocationSettings = (props) => {
   const locationsColumns = [
     {
       dataField: "ID",
-      text: "ID",
+      text: "",
       hidden: true,
     },
     {
@@ -171,7 +169,7 @@ const LocationSettings = (props) => {
         <CCol>
           <CCard>
             <CCardHeader>
-              <h4>Birim Ayarları</h4>
+              <h4>Birlik Ayarları</h4>
             </CCardHeader>
             <CCardBody>
               <CTabs activeTab="manuel">
@@ -207,8 +205,8 @@ const LocationSettings = (props) => {
                             columns={locationsColumns}
                             isCellEditActive={true}
                             asyncUpdateMethod={locationUpdateCell}
-                            updateStatus={updateStatus}
                             isAddButtonActive={true}
+                            addButtonText="Birlik Ekle"
                             onAddButtonClick={onModalToggle}
                           />
                         )}

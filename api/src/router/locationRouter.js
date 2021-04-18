@@ -2,8 +2,8 @@ const express = require('express');
 const { 
   getLocations,
   createLocation,
-  removeLocation,
   updateLocation,
+  removeLocation,
   getLocationByID,
 } = require('../controllers/locationController');
 

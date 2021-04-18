@@ -22,7 +22,7 @@ import {
  * @returns Component
  */
 
-let LocationInsertForm = (props) => {
+const LocationInsertForm = (props) => {
 
   const { inputChangeHandler, onSubmit, values } = props;
 
@@ -32,7 +32,7 @@ let LocationInsertForm = (props) => {
         <CCol sm="12">
           <CForm>
             <CFormGroup>
-              <CLabel htmlFor="nf-email">Birlik/Kurum Adı</CLabel>
+              <CLabel htmlFor="name">Birlik/Kurum Adı</CLabel>
               <CInput
                 type="text"
                 name="name"
@@ -42,7 +42,7 @@ let LocationInsertForm = (props) => {
               />
             </CFormGroup>
             <CFormGroup>
-              <CLabel htmlFor="nf-password">Erişim No</CLabel>
+              <CLabel htmlFor="tafics">Erişim No</CLabel>
               <CInput
                 type="text"
                 name="tafics"
@@ -52,7 +52,7 @@ let LocationInsertForm = (props) => {
               />
             </CFormGroup>
             <CFormGroup>
-              <CLabel htmlFor="nf-password">Operatör Erişim No</CLabel>
+              <CLabel htmlFor="operatorAccessNumber">Operatör Erişim No</CLabel>
               <CInput
                 type="text"
                 name="operatorAccessNumber"
@@ -62,7 +62,7 @@ let LocationInsertForm = (props) => {
               />
             </CFormGroup>
             <CFormGroup>
-              <CLabel htmlFor="nf-password">Harici Numara</CLabel>
+              <CLabel htmlFor="externalNumber">Harici Numara</CLabel>
               <CInput
                 type="text"
                 name="externalNumber"
@@ -72,7 +72,7 @@ let LocationInsertForm = (props) => {
               />
             </CFormGroup>
             <CFormGroup className="checkbox-group">
-              <CLabel htmlFor="nf-password">Alt birlikler ve numaralar tanımlamak <span>istiyorum.</span></CLabel>
+              <CLabel htmlFor="isGeneral">Alt birlikler ve numaralar tanımlamak <span>istiyorum.</span></CLabel>
               <CInputCheckbox
                 className="checkbox-group-input"
                 name="isGeneral"

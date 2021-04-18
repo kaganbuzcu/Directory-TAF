@@ -82,9 +82,10 @@ const DataTable = (props) => {
     isCellEditActive,
     asyncUpdateMethod,
     isAddButtonActive,
+    addButtonText,
     onAddButtonClick
   } = props;
-  
+
   const beforeSaveCell = (oldValue, newValue, row, column) => {
     asyncUpdateMethod(oldValue, newValue, row, column);
   }
@@ -123,7 +124,6 @@ const DataTable = (props) => {
               ? (
                 <div className="float-right">
                   <CButton
-                    key="addLocationButton"
                     color="success"
                     className="m-2"
                     style={{
@@ -133,7 +133,7 @@ const DataTable = (props) => {
                     onClick={onAddButtonClick}
                   >
                     <CIcon content={freeSet.cilPlus} style={{ width: 20, height: 20 }} />
-                    <span>Birlik Ekle</span>
+                    <span>{addButtonText}</span>
                   </CButton>
                 </div>
               )

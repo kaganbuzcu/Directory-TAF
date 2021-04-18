@@ -29,7 +29,12 @@ const createLocation = (req, res) => {
       if (result.rows.length != 0) {
         res.send({ status: "error", message: "Aynı isme sahip bir birlik var." });
       } else {
-        db.query(`INSERT INTO locations VALUES ($1, $2, $3, $4, $5) RETURNING *`, [
+        db.query(`INSERT INTO locations(
+          "name",
+          "externalNumber",
+          "tafics",
+          "isGeneral",
+          "operatorAccessNumber") VALUES ($1, $2, $3, $4, $5) RETURNING *`, [
           name,
           externalNumber,
           tafics,
@@ -53,25 +58,6 @@ const createLocation = (req, res) => {
 };
 
 /**
- * Remove a location.
- */
-const removeLocation = (req, res) => {
-  if (req.params.id === undefined || req.params.id === "") {
-    res.status(400).send({ status: "error", message: 'Eksik parametre!' });
-    return;
-  }
-
-  db.query(`DELETE FROM locations WHERE "ID" = $1`, [req.params.id])
-    .then(() => res.status(200)
-    .send({
-      status: "success",
-      message: "Birlik başarıyla silindi.",
-      lastID: req.params.id
-    }))
-    .catch(({ error }) => res.status(500).send({ status: "error", message: error }));
-};
-
-/**
  * Update a location.
  */
 const updateLocation = (req, res) => {
@@ -91,7 +77,26 @@ const updateLocation = (req, res) => {
 };
 
 /**
- * Get a post.
+ * Remove a location.
+ */
+const removeLocation = (req, res) => {
+  if (req.params.id === undefined || req.params.id === "") {
+    res.status(400).send({ status: "error", message: 'Eksik parametre!' });
+    return;
+  }
+
+  db.query(`DELETE FROM locations WHERE "ID" = $1`, [req.params.id])
+    .then(() => res.status(200)
+      .send({
+        status: "success",
+        message: "Birlik başarıyla silindi.",
+        lastID: req.params.id
+      }))
+    .catch(({ error }) => res.status(500).send({ status: "error", message: error }));
+};
+
+/**
+ * Get a location.
  */
 const getLocationByID = (req, res) => {
   db.query(`SELECT * FROM locations WHERE "ID" = $1`, [req.params.id])
@@ -106,7 +111,7 @@ const getLocationByID = (req, res) => {
 export {
   getLocations,
   createLocation,
-  removeLocation,
   updateLocation,
+  removeLocation,
   getLocationByID,
 };

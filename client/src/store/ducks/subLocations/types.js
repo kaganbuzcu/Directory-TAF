@@ -1,0 +1,16 @@
+export const SubLocationsActionTypes = {
+  FETCH:                  '@@subLocation/FETCH',
+  FETCH_SUCCESS:          '@@subLocation/FETCH_SUCCESS',
+  FETCH_ERROR:            '@@subLocation/FETCH_ERROR',
+  INSERT_INPUT_ON_CHANGE: '@@subLocation/INSERT_INPUT_ON_CHANGE',
+  INSERT:                 '@@subLocation/INSERT',
+  INSERT_SUCCESS:         '@@subLocation/INSERT_SUCCESS',
+  INSERT_ERROR:           '@@subLocation/INSERT_ERROR',
+  UPDATE:                 '@@subLocation/UPDATE',
+  UPDATE_SUCCESS:         '@@subLocation/UPDATE_SUCCESS',
+  UPDATE_ERROR:           '@@subLocation/UPDATE_ERROR',
+  DELETE:                 '@@subLocation/DELETE',
+  DELETE_SUCCESS:         '@@subLocation/DELETE_SUCCESS',
+  DELETE_ERROR:           '@@subLocation/DELETE_ERROR',
+  CLEAR_API_CALL_STATUS:  '@@subLocation/CLEAR_API_CALL_STATUS',
+};
