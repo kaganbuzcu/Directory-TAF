@@ -12,11 +12,8 @@ export const initialState = {
     operatorAccessNumber: '',
     externalNumber: '',
   },
-  editLoading: false,
   apiCallStatus: '',
-  apiCallStatusMessage: '',
-  updateStatus: false,
-  deleteStatus: false
+  apiCallStatusMessage: ''
 };
 
 export const locationsReducer = (
@@ -50,8 +47,8 @@ export const locationsReducer = (
     case LocationsActionTypes.INSERT_INPUT_ON_CHANGE: {
       return {
         ...state,
-        locationInsertInputValues: {
-          ...state.locationInsertInputValues,
+        insertInputValues: {
+          ...state.insertInputValues,
           [action.payload.name]: action.payload.value
         }
       };
@@ -61,26 +58,23 @@ export const locationsReducer = (
         ...state,
         apiCallStatus: '',
         apiCallStatusMessage: '',
-        editLoading: true,
       };
     }
     case LocationsActionTypes.INSERT_SUCCESS: {
-      let newLocation = { ...state.locationInsertInputValues, ID: action.payload.lastID };
+      let newLocation = { ...state.insertInputValues, ID: action.payload.lastID };
       return {
         ...state,
-        editLoading: false,
         locations: state.locations.concat(newLocation),
         apiCallStatus: "success",
         apiCallStatusMessage: action.payload.message,
-        locationInsertInputValues: {
-          ...initialState.locationInsertInputValues
+        insertInputValues: {
+          ...initialState.insertInputValues
         },
       };
     }
     case LocationsActionTypes.INSERT_ERROR: {
       return {
         ...state,
-        editLoading: false,
         apiCallStatus: "danger",
         apiCallStatusMessage: action.payload.message
       };
@@ -90,62 +84,49 @@ export const locationsReducer = (
         ...state,
         apiCallStatus: '',
         apiCallStatusMessage: '',
-        editLoading: true,
-        updateStatus: false,
       };
     }
     case LocationsActionTypes.UPDATE_SUCCESS: {
       return {
         ...state,
-        editLoading: false,
         apiCallStatus: "success",
-        apiCallStatusMessage: action.payload.message,
-        updateStatus: true
+        apiCallStatusMessage: action.payload.message
       };
     }
     case LocationsActionTypes.UPDATE_ERROR: {
       return {
         ...state,
-        editLoading: false,
         apiCallStatus: "danger",
-        apiCallStatusMessage: action.payload.message,
-        updateStatus: false
+        apiCallStatusMessage: action.payload.message
       };
     }
     case LocationsActionTypes.DELETE: {
       return {
         ...state,
         apiCallStatus: '',
-        apiCallStatusMessage: '',
-        editLoading: true,
-        updateStatus: false,
+        apiCallStatusMessage: ''
       };
     }
     case LocationsActionTypes.DELETE_SUCCESS: {
       return {
         ...state,
-        editLoading: false,
         apiCallStatus: "success",
         apiCallStatusMessage: action.payload.message,
-        updateStatus: true,
         locations: state.locations.filter((row) => row.ID != action.payload.lastID)
       };
     }
     case LocationsActionTypes.DELETE_ERROR: {
       return {
         ...state,
-        editLoading: false,
         apiCallStatus: "danger",
-        apiCallStatusMessage: action.payload.message,
-        updateStatus: false
+        apiCallStatusMessage: action.payload.message
       };
     }
     case LocationsActionTypes.CLEAR_API_CALL_STATUS: {
       return {
         ...state,
         apiCallStatus: "",
-        apiCallStatusMessage: "",
-        updateStatus: false
+        apiCallStatusMessage: ""
       };
     }
     default:

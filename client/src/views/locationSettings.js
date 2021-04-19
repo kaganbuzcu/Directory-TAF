@@ -35,7 +35,7 @@ const LocationSettings = (props) => {
   const {
     locations,
     loading,
-    locationInsertInputValues,
+    insertInputValues,
     apiCallStatus,
     apiCallStatusMessage
   } = props.states;
@@ -72,7 +72,7 @@ const LocationSettings = (props) => {
   }
 
   const locationInsertFormSubmit = () => {
-    onLocationInsertFormSubmit(locationInsertInputValues);
+    onLocationInsertFormSubmit(insertInputValues);
   }
 
   useEffect(() => {
@@ -148,6 +148,18 @@ const LocationSettings = (props) => {
     },
   ];
 
+  if (loading) {
+    return (
+      <CSpinner
+        color="primary"
+        style={{
+          width: "4rem",
+          height: "4rem",
+        }}
+      />
+    );
+  }
+  
   return (
     <>
       <Alert
@@ -163,7 +175,7 @@ const LocationSettings = (props) => {
         <LocationInsertForm
           onSubmit={locationInsertFormSubmit}
           inputChangeHandler={inputChangeHandler}
-          values={locationInsertInputValues} />
+          values={insertInputValues} />
       </InsertFormModal>
       <CRow>
         <CCol>
@@ -191,15 +203,7 @@ const LocationSettings = (props) => {
                         </h6>
                       </CCardHeader>
                       <CCardBody>
-                        {loading ? (
-                          <CSpinner
-                            color="primary"
-                            style={{
-                              width: "4rem",
-                              height: "4rem",
-                            }}
-                          />
-                        ) : (
+                        {
                           <DataTable
                             rows={locations}
                             columns={locationsColumns}
@@ -209,7 +213,7 @@ const LocationSettings = (props) => {
                             addButtonText="Birlik Ekle"
                             onAddButtonClick={onModalToggle}
                           />
-                        )}
+                        }
                       </CCardBody>
                     </CCard>
                   </CTabPane>

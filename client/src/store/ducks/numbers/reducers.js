@@ -1,24 +1,29 @@
 import {
-  SubLocationsActionTypes,
+  NumbersActionTypes,
 } from './types';
 
 export const initialState = {
-  subLocations: [],
+  numbers: [],
   loading: false,
   insertInputValues: {
-    name: '',
+    duty: '',
+    internalNumber: '',
+    nameSurname: '',
+    rank: '',
+    gsm: '',
+    subLocationID: '',
     locationID: '',
   },
   apiCallStatus: '',
   apiCallStatusMessage: ''
 };
 
-export const subLocationsReducer = (
+export const numbersReducer = (
   state = initialState,
   action
 ) => {
   switch (action.type) {
-    case SubLocationsActionTypes.FETCH: {
+    case NumbersActionTypes.FETCH: {
       return {
         ...state,
         apiCallStatus: '',
@@ -26,14 +31,14 @@ export const subLocationsReducer = (
         loading: true
       };
     }
-    case SubLocationsActionTypes.FETCH_SUCCESS: {
+    case NumbersActionTypes.FETCH_SUCCESS: {
       return {
         ...state,
-        subLocations: action.payload,
+        numbers: action.payload,
         loading: false
       };
     }
-    case SubLocationsActionTypes.FETCH_ERROR: {
+    case NumbersActionTypes.FETCH_ERROR: {
       return {
         ...state,
         loading: false,
@@ -41,7 +46,7 @@ export const subLocationsReducer = (
         apiCallStatusMessage: action.payload
       };
     }
-    case SubLocationsActionTypes.INSERT_INPUT_ON_CHANGE: {
+    case NumbersActionTypes.INSERT_INPUT_ON_CHANGE: {
       return {
         ...state,
         insertInputValues: {
@@ -50,18 +55,18 @@ export const subLocationsReducer = (
         }
       };
     }
-    case SubLocationsActionTypes.INSERT: {
+    case NumbersActionTypes.INSERT: {
       return {
         ...state,
         apiCallStatus: '',
-        apiCallStatusMessage: ''
+        apiCallStatusMessage: '',
       };
     }
-    case SubLocationsActionTypes.INSERT_SUCCESS: {
-      let newSubLocation = { ...state.insertInputValues, ID: action.payload.lastID, locationName: action.payload.locationName };
+    case NumbersActionTypes.INSERT_SUCCESS: {
+      let newNumber = { ...state.insertInputValues, ID: action.payload.lastID };
       return {
         ...state,
-        subLocations: state.subLocations.concat(newSubLocation),
+        numbers: state.numbers.concat(newNumber),
         apiCallStatus: "success",
         apiCallStatusMessage: action.payload.message,
         insertInputValues: {
@@ -69,57 +74,57 @@ export const subLocationsReducer = (
         },
       };
     }
-    case SubLocationsActionTypes.INSERT_ERROR: {
+    case NumbersActionTypes.INSERT_ERROR: {
       return {
         ...state,
         apiCallStatus: "danger",
         apiCallStatusMessage: action.payload.message
       };
     }
-    case SubLocationsActionTypes.UPDATE: {
+    case NumbersActionTypes.UPDATE: {
       return {
         ...state,
         apiCallStatus: '',
         apiCallStatusMessage: '',
       };
     }
-    case SubLocationsActionTypes.UPDATE_SUCCESS: {
+    case NumbersActionTypes.UPDATE_SUCCESS: {
       return {
         ...state,
         apiCallStatus: "success",
         apiCallStatusMessage: action.payload.message
       };
     }
-    case SubLocationsActionTypes.UPDATE_ERROR: {
+    case NumbersActionTypes.UPDATE_ERROR: {
       return {
         ...state,
         apiCallStatus: "danger",
         apiCallStatusMessage: action.payload.message
       };
     }
-    case SubLocationsActionTypes.DELETE: {
+    case NumbersActionTypes.DELETE: {
       return {
         ...state,
         apiCallStatus: '',
         apiCallStatusMessage: ''
       };
     }
-    case SubLocationsActionTypes.DELETE_SUCCESS: {
+    case NumbersActionTypes.DELETE_SUCCESS: {
       return {
         ...state,
         apiCallStatus: "success",
         apiCallStatusMessage: action.payload.message,
-        subLocations: state.subLocations.filter((row) => row.ID != action.payload.lastID)
+        numbers: state.numbers.filter((row) => row.ID != action.payload.lastID)
       };
     }
-    case SubLocationsActionTypes.DELETE_ERROR: {
+    case NumbersActionTypes.DELETE_ERROR: {
       return {
         ...state,
         apiCallStatus: "danger",
         apiCallStatusMessage: action.payload.message
       };
     }
-    case SubLocationsActionTypes.CLEAR_API_CALL_STATUS: {
+    case NumbersActionTypes.CLEAR_API_CALL_STATUS: {
       return {
         ...state,
         apiCallStatus: "",

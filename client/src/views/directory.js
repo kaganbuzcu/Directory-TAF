@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
-  fetchLocationsAction,
+  fetchAction as fetchLocationsAction
 } from "../store/ducks/locations/actions";
+import {
+  fetchAction as fetchSubLocationsAction
+} from "../store/ducks/subLocations/actions";
+import {
+  fetchAction as fetchNumbersAction
+} from "../store/ducks/numbers/actions";
 import {
   CCard,
   CCardBody,
@@ -16,6 +22,7 @@ import {
   CTabContent,
   CTabPane,
   CCollapse,
+  CSpinner
 } from "@coreui/react";
 import Select from "react-select";
 import { DataTable } from "../components/dataTable";
@@ -23,116 +30,38 @@ import { DataTable } from "../components/dataTable";
 const Directory = (props) => {
   const [collapse, setCollapse] = useState(false);
 
-  const directoryData = [
-    {
-      id: 0,
-      makam: "ordu komutanı",
-      rutbe: "ORGENERAL",
-      isim: "Metin GÜRAK",
-      dahili: "2000",
-      milsec: "5001",
-      cep: "",
-    },
-    {
-      id: 1,
-      makam: "ordu komutanı emir asb.",
-      rutbe: "",
-      isim: "",
-      dahili: "2013",
-      milsec: "",
-      cep: "",
-    },
-    {
-      id: 2,
-      makam: "tümen komutanı",
-      rutbe: "Tümgeneral",
-      isim: "Levent ERGÜN",
-      dahili: "2001",
-      milsec: "5002",
-      cep: "",
-    },
-    {
-      id: 3,
-      makam: "tümen komutanı emir asb.",
-      rutbe: "",
-      isim: "",
-      dahili: "2013",
-      milsec: "",
-      cep: "",
-    },
-    {
-      id: 4,
-      makam: "tümen komutanı icra sb.",
-      rutbe: "Tank Albay",
-      isim: "Yasin",
-      dahili: "2003",
-      milsec: "",
-      cep: "",
-    },
-    {
-      id: 5,
-      makam: "tümen k.yrd.",
-      rutbe: "",
-      isim: "Mehmet AÇIK",
-      dahili: "4000",
-      milsec: "5003",
-      cep: "",
-    },
-    {
-      id: 6,
-      makam: "tümen k.yrd emir asb.",
-      rutbe: "",
-      isim: "",
-      dahili: "4002",
-      milsec: "",
-      cep: "",
-    },
-    {
-      id: 7,
-      makam: "kurmay başkanı",
-      rutbe: "Tank Albay",
-      isim: "NAİL TÜRE",
-      dahili: "2019",
-      milsec: "",
-      cep: "",
-    },
-    {
-      id: 8,
-      makam: "personel şube müdürü",
-      rutbe: "Per.Yzb.",
-      isim: "Murat SAY",
-      dahili: "2101",
-      milsec: "",
-      cep: "0542 420 90 25",
-    },
-    {
-      id: 9,
-      makam: "per.işl.asb.",
-      rutbe: "Per.Asb.Üçvş.",
-      isim: "Haluk KARALAR",
-      dahili: "2102",
-      milsec: "",
-      cep: "",
-    },
-    {
-      id: 10,
-      makam: "istihbarat şube müdürü",
-      rutbe: "P.Yb.",
-      isim: "Orhan Veli SAYKI",
-      dahili: "2201",
-      milsec: "",
-      cep: "0552 585 12 40",
-    },
-    {
-      id: 11,
-      makam: "isth.ş.asb.",
-      rutbe: "isth.asb.kd.çvş.",
-      isim: "Ömer GÖZEL",
-      dahili: "2202",
-      milsec: "",
-      cep: "0538 625 56 32",
-    },
-  ];
+  const {
+    onPageLoad
+  } = props.methods;
+
+  const {
+    locations,
+    loading
+  } = props.states.locations;
+
+  const {
+    subLocations,
+  } = props.states.subLocations;
+
+  const {
+    numbers,
+  } = props.states.numbers;
+
+  const options = [{
+    value: 0,
+    label: "Tümü",
+    locationID: 0
+  }];
+
+  if (subLocations.length !== 0) {
+    subLocations.map((subLocation, index) => {
+      options.push({
+        value: subLocation.ID,
+        label: subLocation.name,
+        locationID: subLocation.locationID
+      });
+    })
+  }
 
   const directoryColumns = [
     {
@@ -141,49 +70,31 @@ const Directory = (props) => {
       hidden: true,
     },
     {
-      dataField: "makam",
+      dataField: "duty",
       text: "MAKAM",
     },
     {
-      dataField: "rutbe",
+      dataField: "rank",
       text: "RÜTBE",
     },
     {
-      dataField: "isim",
+      dataField: "nameSurname",
       text: "ADI SOYADI",
     },
     {
-      dataField: "dahili",
+      dataField: "internalNumber",
       text: "DAHİLİ",
     },
     {
-      dataField: "milsec",
-      text: "MİLSEC",
-    },
-    {
-      dataField: "cep",
+      dataField: "gsm",
       text: "CEP TELEFONU",
-    },
+    }
   ];
 
-  const options = [
-    { value: "0", label: "6'NCI MKNZ.P.TÜM.K.LIĞI EKY/ÇILDIROBA" },
-    { value: "1", label: "KOMUTAN YARDIMCILIĞI" },
-    { value: "2", label: "PERSONEL ŞUBE MÜDÜRLÜĞÜ" },
-  ];
-
-  const {
-    onPageLoad,
-  } = props.methods;
-
-  const {
-    locations,
-  } = props.states;
-
-  const locationsColumns = [
+  const generalTaficsColumns = [
     {
       dataField: "ID",
-      text: "ID",
+      text: "",
       hidden: true,
     },
     {
@@ -202,13 +113,35 @@ const Directory = (props) => {
     {
       dataField: "externalNumber",
       text: "HARİCİ NO",
-    },
+    }
   ];
 
   /**Get */
   useEffect(() => {
     onPageLoad();
   }, []);
+
+  /** Sub Location Select */
+  const [selectedSubLocation, setSelectedSubLocation] = useState({});
+  const onChangeSubLocationSelect = (selected) => {
+    setSelectedSubLocation(selected);
+    setCollapse(false);
+    setTimeout(() => {
+      setCollapse(true);
+    }, 200);
+  }
+
+  if (loading) {
+    return (
+      <CSpinner
+        color="primary"
+        style={{
+          width: "4rem",
+          height: "4rem",
+        }}
+      />
+    );
+  }
 
   return (
     <>
@@ -231,46 +164,63 @@ const Directory = (props) => {
               </p>
             </CCardHeader>
             <CCardBody>
-              <CTabs activeTab="directory">
+              <CTabs 
+              onActiveTabChange={() => onChangeSubLocationSelect({ value: 0, label: "Tümü", locationID: 0 })}>
                 <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="directory">Rehber</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
+                  {
+                    locations.map(location => {
+                      if (location.isGeneral) {
+                        return (
+                          <CNavItem key={location.ID}>
+                            <CNavLink data-tab={location.ID}>{location.name}</CNavLink>
+                          </CNavItem>
+                        )
+                      }
+                    })
+                  }
+                  <CNavItem key="generalTafics">
                     <CNavLink data-tab="generalTafics">Genel Tafics</CNavLink>
                   </CNavItem>
                 </CNav>
                 <CTabContent>
-                  <CTabPane data-tab="directory">
-                    <CCard>
-                      <CCardHeader>
-                        <Select
-                          options={options}
-                          placeholder="Seçiniz"
-                          onChange={() => {
-                            setCollapse(false);
-                            setTimeout(() => {
-                              setCollapse(true);
-                            }, 500);
-                          }}
-                        />
-                      </CCardHeader>
-                      <CCardBody>
-                        <CCollapse show={collapse}>
-                          <DataTable
-                            rows={directoryData}
-                            columns={directoryColumns}
-                          />
-                        </CCollapse>
-                      </CCardBody>
-                    </CCard>
-                  </CTabPane>
+                  {
+                    locations.map(location => {
+                      if (location.isGeneral) {
+                        return (
+                          <CTabPane key={location.ID} data-tab={location.ID}>
+                            <CCard>
+                              <CCardHeader>
+                                <Select
+                                  options={options.filter((row) => row.locationID == location.ID || row.locationID == 0)}
+                                  placeholder="Seçiniz"
+                                  onChange={onChangeSubLocationSelect}
+                                  value={selectedSubLocation}
+                                />
+                              </CCardHeader>
+                              <CCardBody>
+                                <CCollapse show={collapse}>
+                                  {<DataTable
+                                    rows={selectedSubLocation.value == 0 ?
+                                      numbers.filter((row) => row.locationID == location.ID)
+                                      : numbers.filter((row) => row.subLocationID == selectedSubLocation.value)}
+                                    columns={directoryColumns}
+                                    isCellEditActive={false}
+                                    isAddButtonActive={false}
+                                  />}
+                                </CCollapse>
+                              </CCardBody>
+                            </CCard>
+                          </CTabPane>
+                        )
+                      }
+                    })
+                  }
                   <CTabPane data-tab="generalTafics">
                     <CCard>
                       <CCardBody>
                         <DataTable
-                          rows={locations}
-                          columns={locationsColumns}
+                          rows={locations.filter((row) => row.isGeneral == false)}
+                          columns={generalTaficsColumns}
                         />
                       </CCardBody>
                     </CCard>
@@ -287,7 +237,11 @@ const Directory = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    states: { ...state.locations }
+    states: {
+      locations: state.locations,
+      subLocations: state.subLocations,
+      numbers: state.numbers
+    }
   };
 };
 
@@ -296,7 +250,9 @@ const mapDispatchToProps = (dispatch) => {
     methods: {
       onPageLoad: () => {
         dispatch(fetchLocationsAction());
-      },
+        dispatch(fetchSubLocationsAction());
+        dispatch(fetchNumbersAction());
+      }
     }
   };
 };

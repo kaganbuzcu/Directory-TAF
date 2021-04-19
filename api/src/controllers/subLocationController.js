@@ -29,7 +29,8 @@ const createSubLocation = (req, res) => {
             if (result.rows.length != 0) {
                 res.send({ status: "error", message: "Aynı isme sahip bir kısım/şube var." });
             } else {
-                db.query(`INSERT INTO sub_locations("name", "locationID") VALUES ($1, $2) RETURNING *`, [
+                db.query(`INSERT INTO sub_locations("name", "locationID", "locationName") 
+                VALUES ($1, $2, (SELECT name FROM locations WHERE "ID" = $2)) RETURNING *`, [
                     name,
                     parseInt(locationID)
                 ])
@@ -37,7 +38,8 @@ const createSubLocation = (req, res) => {
                         .send({
                             status: "success",
                             message: "Kısım/Şube başarıyla eklendi.",
-                            lastID: result.rows[0].ID
+                            lastID: result.rows[0].ID,
+                            locationName: result.rows[0].locationName
                         }))
                     .catch(message => res.status(500).send({ status: "error", message: message }));
             }

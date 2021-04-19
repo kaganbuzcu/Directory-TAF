@@ -23,8 +23,8 @@ const createNumber = (req, res) => {
     res.status(400).send({ status: "error", message: "Dahili Numara ve Makam boş olamaz." });
     return;
   }
-
-  db.query(`SELECT * FROM locations WHERE "internalNumber" = $1 OR "duty" = $2`, [internalNumber, duty])
+  
+  db.query(`SELECT * FROM numbers WHERE "internalNumber" = $1 OR "duty" = $2`, [internalNumber, duty])
     .then((result) => {
       if (result.rows.length != 0) {
         res.send({ status: "error", message: "Dahili Numara veya Makam veri tabanında mevcut." });
@@ -42,8 +42,8 @@ const createNumber = (req, res) => {
           nameSurname === undefined ? "" : nameSurname,
           rank === undefined ? "" : rank,
           gsm === undefined ? "" : gsm,
-          subLocationID,
-          locationID,
+          parseInt(subLocationID),
+          parseInt(locationID),
         ])
           .then((result) => res.status(200)
             .send({
@@ -51,10 +51,14 @@ const createNumber = (req, res) => {
               message: "Numara başarıyla eklendi.",
               lastID: result.rows[0].ID
             }))
-          .catch(message => res.status(500).send({ status: "error", message: message }));
+          .catch(message => {
+            console.log(message);
+            res.status(500).send({ status: "error", message: message })
+          });
       }
     })
     .catch(({ message }) => {
+      console.log(message);
       res.status(500).send({ status: "error", message: message });
       return;
     });

@@ -112,11 +112,10 @@ const SubLocationSettings = (props) => {
   }, []);
 
   /** Location Select Methods */
-  const [selectedOptionName, setselectedOptionName] = useState({});
+  const [selectedLocation, setSelectedLocation] = useState({});
   const [isAddButtonActive, setisAddButtonActive] = useState(false);
   const onChangeLocationSelect = (selected) => {
-    console.log(selected);
-    setselectedOptionName(selected);
+    setSelectedLocation(selected);
     if (selected.value != "0")
       setisAddButtonActive(true);
     else
@@ -164,6 +163,19 @@ const SubLocationSettings = (props) => {
     onDeleteSubmit(id);
   }
 
+
+  if (loading) {
+    return (
+      <CSpinner
+        color="primary"
+        style={{
+          width: "4rem",
+          height: "4rem",
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <Alert
@@ -172,7 +184,7 @@ const SubLocationSettings = (props) => {
         onShowChange={e => onChangeAlertShow(e)}
         show={apiCallStatus === '' ? false : 3} />
       <InsertFormModal
-        title={selectedOptionName.label + " için Kısım/Şube ekle."}
+        title={selectedLocation.label + " için Kısım/Şube ekle."}
         onModalToggle={onModalToggle}
         modalShow={modalShow}
       >
@@ -202,17 +214,9 @@ const SubLocationSettings = (props) => {
                 </CCardHeader>
                 <CCardBody>
                   <CCollapse show={collapse}>
-                    {loading ? (
-                      <CSpinner
-                        color="primary"
-                        style={{
-                          width: "4rem",
-                          height: "4rem",
-                        }}
-                      />
-                    ) : (
+                    {
                       <DataTable
-                        rows={subLocations.filter((row) => row.locationID == selectedOptionName.value || selectedOptionName.value == 0)}
+                        rows={subLocations.filter((row) => row.locationID == selectedLocation.value || selectedLocation.value == 0)}
                         columns={subLocationsColumns}
                         isCellEditActive={true}
                         asyncUpdateMethod={updateCell}
@@ -220,7 +224,7 @@ const SubLocationSettings = (props) => {
                         addButtonText="Kısım/Şube Ekle"
                         onAddButtonClick={onModalToggle}
                       />
-                    )}
+                    }
                   </CCollapse>
                 </CCardBody>
               </CCard>

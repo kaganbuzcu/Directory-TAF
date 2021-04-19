@@ -1,0 +1,16 @@
+export const NumbersActionTypes = {
+  FETCH:                  '@@numbers/FETCH',
+  FETCH_SUCCESS:          '@@numbers/FETCH_SUCCESS',
+  FETCH_ERROR:            '@@numbers/FETCH_ERROR',
+  INSERT_INPUT_ON_CHANGE: '@@numbers/INSERT_INPUT_ON_CHANGE',
+  INSERT:                 '@@numbers/INSERT',
+  INSERT_SUCCESS:         '@@numbers/INSERT_SUCCESS',
+  INSERT_ERROR:           '@@numbers/INSERT_ERROR',
+  UPDATE:                 '@@numbers/UPDATE',
+  UPDATE_SUCCESS:         '@@numbers/UPDATE_SUCCESS',
+  UPDATE_ERROR:           '@@numbers/UPDATE_ERROR',
+  DELETE:                 '@@numbers/DELETE',
+  DELETE_SUCCESS:         '@@numbers/DELETE_SUCCESS',
+  DELETE_ERROR:           '@@numbers/DELETE_ERROR',
+  CLEAR_API_CALL_STATUS:  '@@numbers/CLEAR_API_CALL_STATUS',
+};

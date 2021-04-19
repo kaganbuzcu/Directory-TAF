@@ -26,7 +26,7 @@ export const insertAction = (formData) => {
     formData.externalNumber === '' ||
     formData.tafics === '' ||
     formData.operatorAccessNumber === '') {
-    return action(LocationsActionTypes.INSERT_ERROR, "Tüm alanlar gereklidir");
+    return action(LocationsActionTypes.INSERT_ERROR, { message: "Tüm alanlar gereklidir" });
   } else {
     return action(LocationsActionTypes.INSERT, [], {
       method: "post",

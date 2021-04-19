@@ -13,17 +13,12 @@ export const fetchError = (message) =>
   action(SubLocationsActionTypes.FETCH_ERROR, message);
 
 /** Sub Location insert service action */
-export const changeInsertInput = (values) => {
-  if (values.name === 'isGeneral') {
-    let booleanValue = values.value === 'true' ? true : false
-    values.value = !booleanValue;
-  }
-  return action(SubLocationsActionTypes.INSERT_INPUT_ON_CHANGE, values);
-}
+export const changeInsertInput = (values) => 
+  action(SubLocationsActionTypes.INSERT_INPUT_ON_CHANGE, values);
 
 export const insertAction = (formData) => {
   if (formData.name === '' || formData.locationID === '') {
-    return action(SubLocationsActionTypes.INSERT_ERROR, "Tüm alanlar gereklidir");
+    return action(SubLocationsActionTypes.INSERT_ERROR, { message: "Tüm alanlar gereklidir" });
   } else {
     return action(SubLocationsActionTypes.INSERT, [], {
       method: "post",
