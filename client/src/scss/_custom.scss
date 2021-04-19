@@ -5,3 +5,26 @@
     width: 100%;
   }
 }
+
+.header-settings {
+  .text-editor {
+    height: 15em;
+    margin-bottom: 3em;
+  }
+  .button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 2em;
+    button {
+      align-items: center;
+      display: flex;
+      width: 7em;
+      justify-content: space-between;
+      margin: 0px !important;
+      .button-icon {
+        width: 20;
+        height: 20; 
+      }
+    }
+  }
+}

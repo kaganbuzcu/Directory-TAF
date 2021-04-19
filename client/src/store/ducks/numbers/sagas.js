@@ -44,7 +44,7 @@ function* handleInsert(action) {
       action.meta.route,
       action.meta.data
     );
-console.log(res);
+    
     if (res.status === "error") {
       yield put(insertError(res));
     } else {

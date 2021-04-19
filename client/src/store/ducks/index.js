@@ -6,18 +6,22 @@ import { subLocationsReducer } from './subLocations/reducers';
 import subLocationsSaga from './subLocations/sagas';
 import { numbersReducer } from './numbers/reducers';
 import numbersSaga from './numbers/sagas';
+import { customizeReducer } from './customize/reducers';
+import customizeSaga from './customize/sagas';
 
 
 export const rootReducer = combineReducers({
   locations: locationsReducer,
   subLocations: subLocationsReducer,
   numbers: numbersReducer,
+  customize: customizeReducer,
 });
 
 export function* rootSaga() {
   yield all([
     fork(locationsSaga),
     fork(subLocationsSaga),
-    fork(numbersSaga)
+    fork(numbersSaga),
+    fork(customizeSaga)
   ]);
 }

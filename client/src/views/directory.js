@@ -10,6 +10,9 @@ import {
   fetchAction as fetchNumbersAction
 } from "../store/ducks/numbers/actions";
 import {
+  fetchAction as fetchHeaderAction
+} from "../store/ducks/customize/actions";
+import {
   CCard,
   CCardBody,
   CCardHeader,
@@ -47,6 +50,10 @@ const Directory = (props) => {
     numbers,
   } = props.states.numbers;
 
+  const {
+    headerText,
+  } = props.states.header;
+  
   const options = [{
     value: 0,
     label: "Tümü",
@@ -142,30 +149,18 @@ const Directory = (props) => {
       />
     );
   }
-
+ 
   return (
     <>
       <CRow>
         <CCol>
           <CCard>
             <CCardHeader>
-              <h5>
-                6'INCI MKNZ.P.TÜM.K.LIĞI (EKY) ÇILDIROBA ÜS BÖLGE KOMUTANLIĞI
-                TELEFON REHBERİ
-              </h5>
-              <br />
-              <p>
-                SANTRAL TAFICS İRTİBAT NUMARASI: <strong>9 223 1118</strong>
-              </p>
-              <p>
-                SANTRAL HARİCİ İRTİBAT NUMARASI: <strong>0348 792 20 74</strong>{" "}
-                / <strong>0348 792 20 38</strong> ( EMNİYETSİZ FAKS NUMARASI:{" "}
-                <strong>0348 792 20 36</strong>)
-              </p>
+              <div dangerouslySetInnerHTML={{ __html: headerText.replace("<br>", "<br/>") }} />
             </CCardHeader>
             <CCardBody>
-              <CTabs 
-              onActiveTabChange={() => onChangeSubLocationSelect({ value: 0, label: "Tümü", locationID: 0 })}>
+              <CTabs
+                onActiveTabChange={() => onChangeSubLocationSelect({ value: 0, label: "Tümü", locationID: 0 })}>
                 <CNav variant="tabs">
                   {
                     locations.map(location => {
@@ -240,7 +235,8 @@ const mapStateToProps = (state) => {
     states: {
       locations: state.locations,
       subLocations: state.subLocations,
-      numbers: state.numbers
+      numbers: state.numbers,
+      header: state.customize
     }
   };
 };
@@ -252,6 +248,7 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(fetchLocationsAction());
         dispatch(fetchSubLocationsAction());
         dispatch(fetchNumbersAction());
+        dispatch(fetchHeaderAction());
       }
     }
   };
