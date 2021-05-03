@@ -22,7 +22,7 @@ import {
 
 const SubLocationInsertForm = (props) => {
 
-  const { inputChangeHandler, onSubmit, values } = props;
+  const { inputChangeHandler, handleKeypress, onSubmit, values } = props;
 
   return (
     <CContainer fluid>
@@ -36,6 +36,7 @@ const SubLocationInsertForm = (props) => {
                 name="name"
                 placeholder="Kısım/Şube adı giriniz..."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.name}
               />
             </CFormGroup>

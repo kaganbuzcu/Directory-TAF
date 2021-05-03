@@ -17,52 +17,73 @@ const getNumbers = (req, res) => {
  * Create a number.
  */
 const createNumber = (req, res) => {
-  const { duty, internalNumber, nameSurname, rank, gsm, subLocationID, locationID } = req.body || {};
+  const {
+    duty,
+    internalNumber,
+    nameSurname,
+    rank,
+    gsm,
+    subLocationID,
+    locationID,
+  } = req.body || {};
 
-  if (duty === '' || internalNumber === '' || subLocationID === undefined || locationID === undefined) {
-    res.status(400).send({ status: "error", message: "Dahili Numara ve Makam boş olamaz." });
+  if (
+    duty === "" ||
+    internalNumber === "" ||
+    subLocationID === undefined ||
+    locationID === undefined
+  ) {
+    res
+      .status(400)
+      .send({ status: "error", message: "Dahili Numara ve Makam boş olamaz." });
     return;
   }
-  
-  db.query(`SELECT * FROM numbers WHERE "internalNumber" = $1 OR "duty" = $2`, [internalNumber, duty])
+
+  db.query(`SELECT * FROM numbers WHERE "internalNumber" = $1`, [
+    internalNumber,
+  ])
     .then((result) => {
       if (result.rows.length != 0) {
-        res.send({ status: "error", message: "Dahili Numara veya Makam veri tabanında mevcut." });
+        res.send({
+          status: "error",
+          message: "Dahili Numara veri tabanında mevcut.",
+        });
       } else {
-        db.query(`INSERT INTO numbers(
+        db.query(
+          `INSERT INTO numbers(
           "duty",
           "internalNumber",
           "nameSurname",
           "rank",
           "gsm",
           "subLocationID",
-          "locationID") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`, [
-          duty,
-          internalNumber,
-          nameSurname === undefined ? "" : nameSurname,
-          rank === undefined ? "" : rank,
-          gsm === undefined ? "" : gsm,
-          parseInt(subLocationID),
-          parseInt(locationID),
-        ])
-          .then((result) => res.status(200)
-            .send({
+          "locationID") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+          [
+            duty,
+            internalNumber,
+            nameSurname === undefined ? "" : nameSurname,
+            rank === undefined ? "" : rank,
+            gsm === undefined ? "" : gsm,
+            parseInt(subLocationID),
+            parseInt(locationID),
+          ]
+        )
+          .then((result) =>
+            res.status(200).send({
               status: "success",
               message: "Numara başarıyla eklendi.",
-              lastID: result.rows[0].ID
-            }))
-          .catch(message => {
-            console.log(message);
-            res.status(500).send({ status: "error", message: message })
+              lastID: result.rows[0].ID,
+            })
+          )
+          .catch((message) => {
+            res.status(500).send({ status: "error", message: message });
           });
       }
     })
     .catch(({ message }) => {
-      console.log(message);
       res.status(500).send({ status: "error", message: message });
       return;
     });
-
 };
 
 /**
@@ -71,8 +92,12 @@ const createNumber = (req, res) => {
 const updateNumber = (req, res) => {
   const { column, data } = req.body || {};
 
-  if (column === undefined || data === undefined || req.params.id === undefined) {
-    res.status(400).send({ status: "error", message: 'Eksik parametre!' });
+  if (
+    column === undefined ||
+    data === undefined ||
+    req.params.id === undefined
+  ) {
+    res.status(400).send({ status: "error", message: "Eksik parametre!" });
     return;
   }
 
@@ -80,8 +105,14 @@ const updateNumber = (req, res) => {
     data,
     req.params.id,
   ])
-    .then(() => res.status(200).send({ status: "success", message: "Güncelleme başarılı." }))
-    .catch(({ message }) => res.status(500).send({ status: "error", message: message }));
+    .then(() =>
+      res
+        .status(200)
+        .send({ status: "success", message: "Güncelleme başarılı." })
+    )
+    .catch(({ message }) =>
+      res.status(500).send({ status: "error", message: message })
+    );
 };
 
 /**
@@ -89,18 +120,21 @@ const updateNumber = (req, res) => {
  */
 const removeNumber = (req, res) => {
   if (req.params.id === undefined || req.params.id === "") {
-    res.status(400).send({ status: "error", message: 'Eksik parametre!' });
+    res.status(400).send({ status: "error", message: "Eksik parametre!" });
     return;
   }
 
   db.query(`DELETE FROM numbers WHERE "ID" = $1`, [req.params.id])
-    .then(() => res.status(200)
-      .send({
+    .then(() =>
+      res.status(200).send({
         status: "success",
         message: "Numara başarıyla silindi.",
-        lastID: req.params.id
-      }))
-    .catch(({ error }) => res.status(500).send({ status: "error", message: error }));
+        lastID: req.params.id,
+      })
+    )
+    .catch(({ error }) =>
+      res.status(500).send({ status: "error", message: error })
+    );
 };
 
 /**
@@ -116,10 +150,4 @@ const getNumberByID = (req, res) => {
     });
 };
 
-export {
-  getNumbers,
-  createNumber,
-  updateNumber,
-  removeNumber,
-  getNumberByID,
-};
+export { getNumbers, createNumber, updateNumber, removeNumber, getNumberByID };

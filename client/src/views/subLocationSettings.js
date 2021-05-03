@@ -83,6 +83,7 @@ const SubLocationSettings = (props) => {
     {
       dataField: "locationName",
       text: "BAĞLI BİRLİK",
+      editable: false,
       headerAttrs: { width: "45%" },
     },
     {
@@ -120,7 +121,6 @@ const SubLocationSettings = (props) => {
       setisAddButtonActive(true);
     else
       setisAddButtonActive(false);
-    onChangeInsertInput({ name: "locationID", value: selected.value });
     setCollapse(false);
     setTimeout(() => {
       setCollapse(true);
@@ -130,7 +130,15 @@ const SubLocationSettings = (props) => {
   /** Insert */
   const [modalShow, setModal] = useState(false);
   const onModalToggle = () => {
+    onChangeInsertInput({ name: "locationID", value: selectedLocation.value });
     setModal(!modalShow);
+  };
+
+  const handleKeypress = (e) => {
+    if (e.nativeEvent.keyCode === 13) {
+      insertFormSubmit();
+      e.preventDefault();
+    }
   };
 
   const inputChangeHandler = (event) => {
@@ -191,6 +199,7 @@ const SubLocationSettings = (props) => {
         <SubLocationInsertForm
           onSubmit={insertFormSubmit}
           inputChangeHandler={inputChangeHandler}
+          handleKeypress={handleKeypress}
           values={insertInputValues} />
       </InsertFormModal>
       <CRow>

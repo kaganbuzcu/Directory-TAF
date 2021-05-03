@@ -6,7 +6,6 @@ import db from "../db/dbQuery";
 const getHeader = (req, res) => {
     db.query(`SELECT "headerText" FROM "static_datas"`, [])
         .then((result) => {
-            console.log(result);
             res.status(200).send({ status: "success", data: result.rows[0].headerText });
         })
         .catch(({ message }) => {

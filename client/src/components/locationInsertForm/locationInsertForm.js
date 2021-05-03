@@ -24,7 +24,7 @@ import {
 
 const LocationInsertForm = (props) => {
 
-  const { inputChangeHandler, onSubmit, values } = props;
+  const { inputChangeHandler, handleKeypress, onSubmit, values } = props;
 
   return (
     <CContainer fluid>
@@ -38,6 +38,7 @@ const LocationInsertForm = (props) => {
                 name="name"
                 placeholder="Birlik adı giriniz..."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.name}
               />
             </CFormGroup>
@@ -48,6 +49,7 @@ const LocationInsertForm = (props) => {
                 name="tafics"
                 placeholder="Tafics numarasını giriniz."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.tafics}
               />
             </CFormGroup>
@@ -58,6 +60,7 @@ const LocationInsertForm = (props) => {
                 name="operatorAccessNumber"
                 placeholder="Dahili numarayı giriniz."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.operatorAccessNumber}
               />
             </CFormGroup>
@@ -68,6 +71,7 @@ const LocationInsertForm = (props) => {
                 name="externalNumber"
                 placeholder="Harici numarayı giriniz."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.externalNumber}
               />
             </CFormGroup>
@@ -78,6 +82,7 @@ const LocationInsertForm = (props) => {
                 name="isGeneral"
                 label="Birlik genel tafics içerisinde mi yer alacak?"
                 onClick={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.isGeneral}
               />
               <CFormText className="help-block">"Birlik genel tafics içerisinde yer almayacaksa, alt birlikler ve numara tanımlamaları yapılacaksa seçilmelidir."</CFormText>

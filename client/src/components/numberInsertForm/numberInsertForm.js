@@ -22,7 +22,7 @@ import {
 
 const NumberInsertForm = (props) => {
 
-  const { inputChangeHandler, onSubmit, values } = props;
+  const { inputChangeHandler, handleKeypress, onSubmit, values } = props;
 
   return (
     <CContainer fluid>
@@ -36,6 +36,7 @@ const NumberInsertForm = (props) => {
                 name="duty"
                 placeholder="Makam adı giriniz..."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.duty}
                 required
               />
@@ -47,6 +48,7 @@ const NumberInsertForm = (props) => {
                 name="internalNumber"
                 placeholder="Dahili numarayı giriniz."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.internalNumber}
                 required
               />
@@ -58,6 +60,7 @@ const NumberInsertForm = (props) => {
                 name="nameSurname"
                 placeholder="Ad Soyad giriniz."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.nameSurname}
               />
             </CFormGroup>
@@ -68,6 +71,7 @@ const NumberInsertForm = (props) => {
                 name="rank"
                 placeholder="Rütbe giriniz."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.rank}
               />
             </CFormGroup>
@@ -78,6 +82,7 @@ const NumberInsertForm = (props) => {
                 name="gsm"
                 placeholder="Cep numarası giriniz."
                 onChange={inputChangeHandler}
+                onKeyPress={handleKeypress}
                 value={values.gsm}
               />
             </CFormGroup>

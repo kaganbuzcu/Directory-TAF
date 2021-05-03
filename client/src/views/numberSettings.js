@@ -137,8 +137,6 @@ const NumberSettings = (props) => {
       setisAddButtonActive(true);
     else
       setisAddButtonActive(false);
-    onChangeInsertInput({ name: "subLocationID", value: selected.value });
-    onChangeInsertInput({ name: "locationID", value: selected.locationID });
     setCollapse(false);
     setTimeout(() => {
       setCollapse(true);
@@ -148,7 +146,16 @@ const NumberSettings = (props) => {
   /** Insert */
   const [modalShow, setModal] = useState(false);
   const onModalToggle = () => {
+    onChangeInsertInput({ name: "subLocationID", value: selectedSubLocation.value });
+    onChangeInsertInput({ name: "locationID", value: selectedSubLocation.locationID });
     setModal(!modalShow);
+  };
+
+  const handleKeypress = (e) => {
+    if (e.nativeEvent.keyCode === 13) {
+      insertFormSubmit();
+      e.preventDefault();
+    }
   };
 
   const inputChangeHandler = (event) => {
@@ -204,6 +211,7 @@ const NumberSettings = (props) => {
       <InsertFormModal
         title={selectedSubLocation.label + " için Numara ekle."}
         onModalToggle={onModalToggle}
+        handleKeypress={handleKeypress}
         modalShow={modalShow}
       >
         <NumberInsertForm

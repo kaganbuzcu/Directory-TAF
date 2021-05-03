@@ -6,7 +6,7 @@ import {
   insertAction,
   updateAction,
   deleteAction,
-  clearApiCallStatus
+  clearApiCallStatus,
 } from "../store/ducks/locations/actions";
 import { DataTable } from "../components/dataTable";
 import { FileUpload } from "../components/fileUpload";
@@ -28,7 +28,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
-  CSpinner
+  CSpinner,
 } from "@coreui/react";
 
 const LocationSettings = (props) => {
@@ -37,7 +37,7 @@ const LocationSettings = (props) => {
     loading,
     insertInputValues,
     apiCallStatus,
-    apiCallStatusMessage
+    apiCallStatusMessage,
   } = props.states;
   const {
     onPageLoad,
@@ -45,7 +45,7 @@ const LocationSettings = (props) => {
     onLocationInsertFormSubmit,
     onLocationUpdateSubmit,
     onLocationDeleteSubmit,
-    onChangeAlertShow
+    onChangeAlertShow,
   } = props.methods;
 
   /**Get */
@@ -65,18 +65,25 @@ const LocationSettings = (props) => {
     setModal(!modalShow);
   };
 
+  const handleKeypress = (e) => {
+    if (e.nativeEvent.keyCode === 13) {
+      locationInsertFormSubmit();
+      e.preventDefault();
+    }
+  };
+
   const inputChangeHandler = (event) => {
     let name = event.target.name;
     let value = event.target.value;
     onChangeLocationInsertInput({ name, value });
-  }
+  };
 
   const locationInsertFormSubmit = () => {
     onLocationInsertFormSubmit(insertInputValues);
-  }
+  };
 
   useEffect(() => {
-    if (apiCallStatus === 'success') {
+    if (apiCallStatus === "success") {
       setModal(false);
     }
   }, [apiCallStatus]);
@@ -86,15 +93,15 @@ const LocationSettings = (props) => {
     let params = {
       column: column.dataField,
       data: newValue,
-      id: row.ID
-    }
+      id: row.ID,
+    };
     onLocationUpdateSubmit(params);
-  }
+  };
 
   /**Remove */
   const onRemoveButtonClick = (id) => {
     onLocationDeleteSubmit(id);
-  }
+  };
 
   const locationsColumns = [
     {
@@ -123,14 +130,15 @@ const LocationSettings = (props) => {
       dataField: "isGeneral",
       text: "ALT BİRLİK",
       editable: false,
-      formatter: (cell, row, rowIndex, colIndex) => (row.isGeneral ? 'Var' : 'Yok'),
+      formatter: (cell, row, rowIndex, colIndex) =>
+        row.isGeneral ? "Var" : "Yok",
       style: (cell, row, rowIndex, colIndex) => {
         if (row.isGeneral) {
           return {
-            color: 'blue',
+            color: "blue",
           };
         }
-      }
+      },
     },
     {
       dataField: "removeLocation",
@@ -159,14 +167,15 @@ const LocationSettings = (props) => {
       />
     );
   }
-  
+
   return (
     <>
       <Alert
         content={apiCallStatusMessage}
         color={apiCallStatus}
-        onShowChange={e => onChangeAlertShow(e)}
-        show={apiCallStatus === '' ? false : 3} />
+        onShowChange={(e) => onChangeAlertShow(e)}
+        show={apiCallStatus === "" ? false : 3}
+      />
       <InsertFormModal
         title="Birlik Ekle"
         onModalToggle={onModalToggle}
@@ -175,7 +184,9 @@ const LocationSettings = (props) => {
         <LocationInsertForm
           onSubmit={locationInsertFormSubmit}
           inputChangeHandler={inputChangeHandler}
-          values={insertInputValues} />
+          handleKeypress={handleKeypress}
+          values={insertInputValues}
+        />
       </InsertFormModal>
       <CRow>
         <CCol>
@@ -257,10 +268,9 @@ const LocationSettings = (props) => {
   );
 };
 
-
 const mapStateToProps = (state) => {
   return {
-    states: { ...state.locations }
+    states: { ...state.locations },
   };
 };
 
@@ -287,7 +297,7 @@ const mapDispatchToProps = (dispatch) => {
           dispatch(clearApiCallStatus());
         }
       },
-    }
+    },
   };
 };
 
