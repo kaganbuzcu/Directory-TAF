@@ -24,7 +24,6 @@ export const customizeReducer = (
       };
     }
     case CustomizeActionTypes.FETCH_SUCCESS: {
-      console.log(action.payload);
       return {
         ...state,
         headerText: Base64.decode(action.payload),

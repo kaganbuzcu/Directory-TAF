@@ -8,7 +8,11 @@ import {
   updateSuccess,
   updateError,
   deleteSuccess,
-  deleteError
+  deleteError,
+  stackInsertSuccess,
+  stackInsertError,
+  stackDeleteSuccess,
+  stackDeleteError
 } from './actions';
 import { LocationsActionTypes } from './types';
 
@@ -111,6 +115,57 @@ function* handleDelete(action) {
 }
 
 /**
+ * @desc Business stack location insert of effect.
+ */
+function* handleStackInsert(action) {
+  try {
+    const res = yield call(
+      apiCaller,
+      action.meta.method,
+      action.meta.route,
+      action.meta.data
+    );
+
+    if (res.status === "error") {
+      yield put(stackInsertError(res));
+    } else {
+      yield put(stackInsertSuccess(res));
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      yield put(stackInsertError(err));
+    } else {
+      yield put(stackInsertError('An unknown error occured.'));
+    }
+  }
+}
+
+/**
+ * @desc Business stack location delete of effect.
+ */
+function* handleStackDelete(action) {
+  try {
+    const res = yield call(
+      apiCaller,
+      action.meta.method,
+      action.meta.route
+    );
+
+    if (res.status === "error") {
+      yield put(stackDeleteError(res));
+    } else {
+      yield put(stackDeleteSuccess(res));
+    }
+  } catch (err) {
+    if (err instanceof Error) {
+      yield put(stackDeleteError(err));
+    } else {
+      yield put(stackDeleteError('An unknown error occured.'));
+    }
+  }
+}
+
+/**
  * @desc Watches every specified action and runs effect method and passes action args to it
  */
 function* watchFetchRequest() {
@@ -118,6 +173,8 @@ function* watchFetchRequest() {
   yield takeLatest(LocationsActionTypes.INSERT, handleInsert);
   yield takeLatest(LocationsActionTypes.UPDATE, handleUpdate);
   yield takeLatest(LocationsActionTypes.DELETE, handleDelete);
+  yield takeLatest(LocationsActionTypes.STACK_INSERT, handleStackInsert);
+  yield takeLatest(LocationsActionTypes.STACK_DELETE, handleStackDelete);
 }
 
 /**

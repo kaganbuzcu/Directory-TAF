@@ -7,6 +7,9 @@ import {
   updateAction,
   deleteAction,
   clearApiCallStatus,
+  changeLocationStack,
+  stackInsertAction,
+  stackDeleteAction
 } from "../store/ducks/locations/actions";
 import { DataTable } from "../components/dataTable";
 import { FileUpload } from "../components/fileUpload";
@@ -38,6 +41,7 @@ const LocationSettings = (props) => {
     insertInputValues,
     apiCallStatus,
     apiCallStatusMessage,
+    stackInsertData
   } = props.states;
   const {
     onPageLoad,
@@ -45,6 +49,9 @@ const LocationSettings = (props) => {
     onLocationInsertFormSubmit,
     onLocationUpdateSubmit,
     onLocationDeleteSubmit,
+    onChangeLocationStack,
+    onStackInsertSubmit,
+    onStackDeleteSubmit,
     onChangeAlertShow,
   } = props.methods;
 
@@ -53,11 +60,20 @@ const LocationSettings = (props) => {
     onPageLoad();
   }, []);
 
-  /**File upload */
-  const [fileData, setFileData] = useState(null);
+  /**File upload stack insert */
   const onFileUploaded = (data) => {
-    setFileData(data);
+    onChangeLocationStack(data);
   };
+
+  const onClickStackInsertButton = () => {
+    onStackInsertSubmit(stackInsertData);
+  };
+
+  const onClickStackDeleteButton = () => {
+    if (window.confirm('Alt birliği olmayan tüm birlikler silinecek. Onaylıyor musunuz?'))
+      onStackDeleteSubmit();
+  };
+
 
   /** Insert */
   const [modalShow, setModal] = useState(false);
@@ -223,6 +239,9 @@ const LocationSettings = (props) => {
                             isAddButtonActive={true}
                             addButtonText="Birlik Ekle"
                             onAddButtonClick={onModalToggle}
+                            isDeleteButtonActive={true}
+                            deleteButtonText="Hepsini Sil"
+                            onDeleteButtonClick={onClickStackDeleteButton}
                           />
                         }
                       </CCardBody>
@@ -241,7 +260,7 @@ const LocationSettings = (props) => {
                       </CCardHeader>
                       <CCardBody>
                         <FileUpload onFileUploaded={onFileUploaded} />
-                        {fileData !== null ? (
+                        {stackInsertData !== null ? (
                           <div style={{ marginTop: 20 }}>
                             <p>
                               Dosyanızın içerisindeki verileri, aşağıdaki
@@ -249,9 +268,12 @@ const LocationSettings = (props) => {
                               kaydedebilirsiniz.
                             </p>
                             <DataTable
-                              rows={fileData}
+                              rows={stackInsertData}
                               columns={locationsColumns}
                               isCellEditActive={true}
+                              isAddButtonActive={true}
+                              addButtonText="Kaydet"
+                              onAddButtonClick={onClickStackInsertButton}
                             />
                           </div>
                         ) : null}
@@ -291,6 +313,15 @@ const mapDispatchToProps = (dispatch) => {
       },
       onLocationDeleteSubmit: (params) => {
         dispatch(deleteAction(params));
+      },
+      onChangeLocationStack: (params) => {
+        dispatch(changeLocationStack(params));
+      },
+      onStackInsertSubmit: (params) => {
+        dispatch(stackInsertAction(params));
+      },
+      onStackDeleteSubmit: () => {
+        dispatch(stackDeleteAction());
       },
       onChangeAlertShow: (alertTimeout) => {
         if (alertTimeout === 0) {

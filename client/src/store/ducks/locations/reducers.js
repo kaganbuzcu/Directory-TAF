@@ -13,7 +13,8 @@ export const initialState = {
     externalNumber: '',
   },
   apiCallStatus: '',
-  apiCallStatusMessage: ''
+  apiCallStatusMessage: '',
+  stackInsertData: []
 };
 
 export const locationsReducer = (
@@ -127,6 +128,58 @@ export const locationsReducer = (
         ...state,
         apiCallStatus: "",
         apiCallStatusMessage: ""
+      };
+    }
+    case LocationsActionTypes.STACK_INSERT_ON_CHANGE: {
+      return {
+        ...state,
+        stackInsertData: action.payload
+      };
+    }
+    case LocationsActionTypes.STACK_INSERT: {
+      return {
+        ...state,
+        apiCallStatus: '',
+        apiCallStatusMessage: '',
+      };
+    }
+    case LocationsActionTypes.STACK_INSERT_SUCCESS: {
+      return {
+        ...state,
+        locations: state.locations.concat(state.stackInsertData),
+        apiCallStatus: "success",
+        apiCallStatusMessage: action.payload.message
+      };
+    }
+    case LocationsActionTypes.STACK_INSERT_ERROR: {
+      return {
+        ...state,
+        apiCallStatus: "danger",
+        apiCallStatusMessage: action.payload.message
+      };
+    }
+    case LocationsActionTypes.STACK_DELETE: {
+      return {
+        ...state,
+        apiCallStatus: '',
+        apiCallStatusMessage: '',
+      };
+    }
+    case LocationsActionTypes.STACK_DELETE_SUCCESS: {
+      const newLocations = state.locations.slice(0, state.locations.length - state.stackInsertData.length);
+      return {
+        ...state,
+        locations: newLocations,
+        stackInsertData: [],
+        apiCallStatus: "success",
+        apiCallStatusMessage: action.payload.message
+      };
+    }
+    case LocationsActionTypes.STACK_DELETE_ERROR: {
+      return {
+        ...state,
+        apiCallStatus: "danger",
+        apiCallStatusMessage: action.payload.message
       };
     }
     default:

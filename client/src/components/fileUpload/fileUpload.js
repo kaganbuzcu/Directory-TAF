@@ -21,7 +21,7 @@ const FileUpload = (props) => {
       required: true,
     },
     "HARİCİ TEL.": {
-      prop: "gsm",
+      prop: "externalNumber",
       required: true,
     },
   };
@@ -38,12 +38,12 @@ const FileUpload = (props) => {
         let data = [];
         rows.rows.forEach((row, key) => {
           if (row.tafics !== undefined && row.name !== undefined) {
-            console.log(row.name.toString());
             row.name = row.name.toString().toLocaleLowerCase("tr-TR");
             row.ID = key;
             data.push(row);
           }
         });
+        console.log(data);
         onFileUploaded(data);
       });
     },

@@ -5,11 +5,18 @@ const {
   updateLocation,
   removeLocation,
   getLocationByID,
+  createStackLocation,
+  removeStackLocation
 } = require('../controllers/locationController');
 
 const router = express.Router();
 
 // api/v1/
+
+/*remove generalTafics false locations*/
+router.get('/locations/stack', removeStackLocation);
+/*create many locations*/
+router.post('/locations/stack', createStackLocation);
 
 /*get all locations*/
 router.get('/locations', getLocations);
@@ -21,7 +28,5 @@ router.put('/locations/:id', updateLocation);
 router.delete('/locations/:id', removeLocation);
 /*get a location*/
 router.get('/locations/:id', getLocationByID);
-
-
 
 export default router;

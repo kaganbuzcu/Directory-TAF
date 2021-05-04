@@ -68,3 +68,36 @@ export const deleteError = (res) =>
 
 export const clearApiCallStatus = () =>
   action(LocationsActionTypes.CLEAR_API_CALL_STATUS);
+
+
+/** Location stack insert service action */
+export const changeLocationStack = (locations) =>
+  action(LocationsActionTypes.STACK_INSERT_ON_CHANGE, locations);
+
+export const stackInsertAction = (locations) => {
+  if (locations.length === 0) {
+    return action(LocationsActionTypes.STACK_INSERT_ERROR, { message: "Tüm alanlar gereklidir" });
+  } else {
+    return action(LocationsActionTypes.STACK_INSERT, [], {
+      method: "post",
+      route: "/locations/stack",
+      data: locations
+    });
+  }
+}
+export const stackInsertSuccess = (res) =>
+  action(LocationsActionTypes.STACK_INSERT_SUCCESS, res);
+export const stackInsertError = (res) =>
+  action(LocationsActionTypes.STACK_INSERT_ERROR, res);
+
+/** Location stack delete service action */
+export const stackDeleteAction = () =>
+  action(LocationsActionTypes.STACK_DELETE, [], {
+    method: "get",
+    route: "/locations/stack"
+  });
+
+export const stackDeleteSuccess = (res) =>
+  action(LocationsActionTypes.STACK_DELETE_SUCCESS, res);
+export const stackDeleteError = (res) =>
+  action(LocationsActionTypes.STACK_DELETE_ERROR, res);

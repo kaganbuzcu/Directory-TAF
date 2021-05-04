@@ -83,7 +83,10 @@ const DataTable = (props) => {
     asyncUpdateMethod,
     isAddButtonActive,
     addButtonText,
-    onAddButtonClick
+    onAddButtonClick,
+    isDeleteButtonActive,
+    deleteButtonText,
+    onDeleteButtonClick
   } = props;
 
   const beforeSaveCell = (oldValue, newValue, row, column) => {
@@ -120,6 +123,24 @@ const DataTable = (props) => {
         {(toolkitprops) => (
           <div>
             <SearchBar {...toolkitprops.searchProps} />
+            {isDeleteButtonActive !== undefined && isDeleteButtonActive === true
+              ? (
+                <div className="float-right">
+                  <CButton
+                    color="danger"
+                    className="m-2"
+                    style={{
+                      alignItems: "center",
+                      display: "flex"
+                    }}
+                    onClick={onDeleteButtonClick}
+                  >
+                    <CIcon content={freeSet.cilDelete} style={{ width: 20, height: 20 }} />
+                    <span>{deleteButtonText}</span>
+                  </CButton>
+                </div>
+              )
+              : undefined}
             {isAddButtonActive !== undefined && isAddButtonActive === true
               ? (
                 <div className="float-right">

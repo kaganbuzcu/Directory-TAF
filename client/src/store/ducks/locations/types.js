@@ -12,5 +12,12 @@ export const LocationsActionTypes = {
   DELETE:                 '@@location/DELETE',
   DELETE_SUCCESS:         '@@location/DELETE_SUCCESS',
   DELETE_ERROR:           '@@location/DELETE_ERROR',
+  STACK_INSERT:           '@@location/STACK_INSERT',
+  STACK_INSERT_SUCCESS:   '@@location/STACK_INSERT_SUCCESS',
+  STACK_INSERT_ERROR:     '@@location/STACK_INSERT_ERROR',
+  STACK_INSERT_ON_CHANGE: '@@location/STACK_INSERT_ON_CHANGE',
+  STACK_DELETE:           '@@location/STACK_DELETE',
+  STACK_DELETE_SUCCESS:   '@@location/STACK_DELETE_SUCCESS',
+  STACK_DELETE_ERROR:     '@@location/STACK_DELETE_ERROR',
   CLEAR_API_CALL_STATUS:  '@@location/CLEAR_API_CALL_STATUS',
 };

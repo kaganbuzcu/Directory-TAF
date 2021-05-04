@@ -54,7 +54,6 @@ const createLocation = (req, res) => {
       res.status(500).send({ status: "error", message: message });
       return;
     });
-
 };
 
 /**
@@ -108,10 +107,65 @@ const getLocationByID = (req, res) => {
     });
 };
 
+/**
+ * Create many locations for general tafics
+ */
+const createStackLocation = (req, res) => {
+  if (req.body.length > 0) {
+    try {
+      req.body.forEach(location => {
+        db.query(`SELECT * FROM locations WHERE "name" = $1`, [location.name])
+          .then((result) => {
+            if (result.rows.length === 0) {
+              db.query(`INSERT INTO locations(
+          "name",
+          "externalNumber",
+          "tafics",
+          "isGeneral",
+          "operatorAccessNumber") VALUES ($1, $2, $3, $4, $5) RETURNING *`, [
+                location.name,
+                location.externalNumber,
+                location.tafics,
+                false,
+                location.operatorAccessNumber
+              ])
+            }
+          })
+      })
+    }
+    catch (error) {
+      res.status(500).send({ status: "error", message: error });
+      return;
+    }
+    res.status(200)
+      .send({
+        status: "success",
+        message: "Birlikler başarıyla eklendi."
+      });
+  }
+};
+
+/**
+ * Remove many locations.
+ */
+const removeStackLocation = (req, res) => {
+  console.log("aaa");
+
+  db.query(`DELETE FROM locations WHERE "isGeneral" = false`, [])
+    .then(() => res.status(200)
+      .send({
+        status: "success",
+        message: "Birlikler başarıyla silindi."
+      }))
+    .catch((error) => res.status(500).send({ status: "error", message: error }));
+};
+
 export {
   getLocations,
   createLocation,
   updateLocation,
   removeLocation,
   getLocationByID,
+  createStackLocation,
+  removeStackLocation
 };
