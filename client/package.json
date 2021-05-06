@@ -6,9 +6,6 @@
       "name": "Kağan Buzcu"
     }
   ],
-  "homepage": ".",
-  "license": "MIT",
-  "private": true,
   "dependencies": {
     "@coreui/chartjs": "^2.0.0",
     "@coreui/coreui": "^3.4.0",
@@ -56,8 +53,7 @@
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "test:debug": "react-scripts --inspect-brk test --runInBand",
-    "eject": "react-scripts eject",
-    "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
